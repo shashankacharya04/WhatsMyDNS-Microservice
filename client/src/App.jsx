@@ -79,7 +79,7 @@ function App() {
           type="text"
           placeholder="enter domain or email"
           onChange={(e) => setValue(e.target.value)}
-          className="input"
+          className="input input-primary text-white m-10"
         />
         <button type="submit" className="btn btn-soft btn-primary">
           submit

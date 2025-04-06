@@ -22,11 +22,11 @@ function Preview(props) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
         {/* WHOIS Information */}
-        <div className="bg-white shadow-lg rounded-2xl p-6 border border-gray-200">
+        <div className="shadow-lg rounded-2xl p-6 border">
           <h2 className="text-2xl font-semibold text-indigo-600 mb-4">
             WHOIS Information
           </h2>
-          <div className="space-y-2 text-gray-800">
+          <div className="space-y-2 text-amber-100">
             <p>
               <span className="font-medium">🌐 Domain Name:</span>{" "}
               {whois.domainName}
@@ -52,7 +52,7 @@ function Preview(props) {
             </p>
             <div>
               <p className="font-medium mb-1">🧭 Name Servers:</p>
-              <ul className="list-disc list-inside ml-2 text-sm text-gray-700">
+              <ul className="list-disc list-inside ml-2 text-sm text-green-400">
                 {whois.nameServers?.map((server, index) => (
                   <li key={index}>{server}</li>
                 ))}
@@ -63,7 +63,7 @@ function Preview(props) {
 
         {/* DNS Information */}
 
-        <div className="bg-white shadow-lg rounded-2xl p-4 border border-gray-200">
+        <div className=" shadow-lg rounded-2xl p-4 border">
           <h2 className="text-xl font-semibold text-green-600 mb-4">
             DNS Information
           </h2>
@@ -81,8 +81,10 @@ function Preview(props) {
               </h3>
               {section.data?.map((record, idx) => (
                 <div key={idx} className="mb-2">
-                  <p className="font-medium text-sm">{record.resolver}:</p>
-                  <ul className="list-disc list-inside text-sm ml-4">
+                  <p className="font-medium text-sm text-slate-50">
+                    {record.resolver}:
+                  </p>
+                  <ul className="list-disc list-inside text-sm ml-4 text-slate-100">
                     {section.key === "ip" && <li>{record.ip}</li>}
 
                     {section.key === "MX" &&
