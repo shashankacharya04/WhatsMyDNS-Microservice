@@ -16,10 +16,10 @@ try {
           dns.setServers([ip]);
           dns.resolveNs(domain, (err, address) => {
             if (err) {
-              console.error(`Error from ${r_name}: ${err.message}`);
+              //console.error(`Error from ${r_name}: ${err.message}`);
               resolve({ resolver: r_name, error: err.message });
             } else {
-              console.log(`Checking from: ${r_name}, IP: ${address}`);
+              //console.log(`Checking from: ${r_name}, IP: ${address}`);
               resolve({ resolver: r_name, NS: address });
             }
           });
@@ -57,10 +57,10 @@ try {
           dns.setServers([ip]);
           dns.lookup(domain, (err, address) => {
             if (err) {
-              console.error(`Error from ${r_name}: ${err.message}`);
+              //console.error(`Error from ${r_name}: ${err.message}`);
               resolve({ resolver: r_name, error: err.message });
             } else {
-              console.log(`Checking from: ${r_name}, IP: ${address}`);
+              //console.log(`Checking from: ${r_name}, IP: ${address}`);
               resolve({ resolver: r_name, ip: address });
             }
           });
@@ -98,10 +98,10 @@ async function mxRecords(req,res){
             dns.setServers([ip]);
             dns.resolveMx(domain, (err, address) => {
               if (err) {
-                console.error(`Error from ${r_name}: ${err.message}`);
+                //console.error(`Error from ${r_name}: ${err.message}`);
                 resolve({ resolver: r_name, error: err.message });
               } else {
-                console.log(`Checking from: ${r_name}, mx: ${address}`);
+                //console.log(`Checking from: ${r_name}, mx: ${address}`);
                 resolve({ resolver: r_name, MX: address });
               }
             });
@@ -144,10 +144,10 @@ async function txtRecords(req,res){
             dns.setServers([ip]);
             dns.resolveTxt(domain, (err, address) => {
               if (err) {
-                console.error(`Error from ${r_name}: ${err.message}`);
+                //console.error(`Error from ${r_name}: ${err.message}`);
                 resolve({ resolver: r_name, error: err.message });
               } else {
-                console.log(`Checking from: ${r_name}, mx: ${address}`);
+                //console.log(`Checking from: ${r_name}, mx: ${address}`);
                 resolve({ resolver: r_name, TXT: address });
               }
             });

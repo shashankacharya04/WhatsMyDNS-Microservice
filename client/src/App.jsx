@@ -12,16 +12,17 @@ function App() {
     TXT: [],
   });
 
+  const baseUrl = import.meta.env.VITE_API_DEV_ENDPOINT;
+
   //make this a hook in future
-  async function getWhoisData() {
-    const response = await fetch(
-      "https://whats-my-dns-server-n49jm5wii-shashankacharya04s-projects.vercel.app/whois",
-      {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ submittedValue }),
-      }
-    ); // response will be like
+  async function getWhoisData(filteredValue) {
+    const payload = filteredValue;
+    console.log("payload is", payload);
+    const response = await fetch(`${baseUrl}/whois`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ payload }),
+    }); // response will be like
     //{domainName: 'youtube.com', registrar: 'MarkMonitor, Inc.', creationDate: '2005-02-15T05:13:12+0000', expiryDate: '2026-02-15T00:00:00+0000', nameServers: Array(4), …}
 
     const data = await response.json();
@@ -31,38 +32,26 @@ function App() {
   }
   async function getDnsDetails() {
     const dnsAPI = [
-      fetch(
-        "https://whats-my-dns-server-n49jm5wii-shashankacharya04s-projects.vercel.app/dnsrecords/A",
-        {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ submittedValue }),
-        }
-      ),
-      fetch(
-        "https://whats-my-dns-server-n49jm5wii-shashankacharya04s-projects.vercel.app/dnsrecords/MX",
-        {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ submittedValue }),
-        }
-      ),
-      fetch(
-        "https://whats-my-dns-server-n49jm5wii-shashankacharya04s-projects.vercel.app//dnsrecords/TXT",
-        {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ submittedValue }),
-        }
-      ),
-      fetch(
-        "https://whats-my-dns-server-n49jm5wii-shashankacharya04s-projects.vercel.app/dnsrecords/NS",
-        {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ submittedValue }),
-        }
-      ),
+      fetch(`${baseUrl}/dnsrecords/A`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ submittedValue }),
+      }),
+      fetch(`${baseUrl}/dnsrecords/MX`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ submittedValue }),
+      }),
+      fetch(`${baseUrl}/dnsrecords/TXT`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ submittedValue }),
+      }),
+      fetch(`${baseUrl}/dnsrecords/NS`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ submittedValue }),
+      }),
     ];
 
     const values = await Promise.all(dnsAPI);
@@ -82,8 +71,29 @@ function App() {
     setsubmittedValue(value);
   };
 
+  const domainValidator = (value) => {
+    // console.log();
+    if (value.includes("@")) {
+      const parts = value.split("@");
+      if (parts.length === 2) {
+        return parts[1];
+      }
+    }
+
+    try {
+      const hostname = new URL(value).hostname;
+      const parts = hostname.split(".");
+      return parts.length > 2 ? parts.slice(-2).join(".") : hostname;
+    } catch (e) {
+      // Invalid URL, return value as-is
+      return value;
+    }
+  };
+
   useEffect(() => {
-    getWhoisData();
+    const filteredValue = domainValidator(submittedValue);
+    console.log("filtered value is ", filteredValue);
+    getWhoisData(filteredValue);
     getDnsDetails();
   }, [submittedValue]); // optimize
 
@@ -94,7 +104,7 @@ function App() {
           type="text"
           placeholder="enter domain or email"
           onChange={(e) => setValue(e.target.value)}
-          className="input input-primary text-white m-10"
+          className="input input-primary text-white m-3"
         />
         <button type="submit" className="btn btn-soft btn-primary">
           submit
