@@ -10,7 +10,7 @@ const app = express();
 const cors = require("cors");
 
 app.use(cors({
-  origin:["https://whats-my-dns-client.vercel.app/","http://localhost:5173"],
+  origin:["https://whats-my-dns-client.vercel.app/","http://localhost:5173", "https://whats-my-dns-client2-5rt1887np-shashankacharya04s-projects.vercel.app/"],
   methods:["GET","POST", "OPTIONS"],
   credentials:true
 }));
