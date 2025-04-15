@@ -9,10 +9,23 @@ const getDnsDetails = require("./controllers/dns.controllers");
 const app = express();
 const cors = require("cors");
 
+// app.use(cors({
+//   origin:["https://whats-my-dns-client.vercel.app","http://localhost:5173", "https://whats-my-dns-client2-5rt1887np-shashankacharya04s-projects.vercel.app"],
+//   methods:["GET","POST", "OPTIONS"],
+//   credentials:true
+// }));
+
+
 app.use(cors({
-  origin:["https://whats-my-dns-client.vercel.app","http://localhost:5173", "https://whats-my-dns-client2-5rt1887np-shashankacharya04s-projects.vercel.app"],
-  methods:["GET","POST", "OPTIONS"],
-  credentials:true
+  origin: (origin, callback) => {
+    if (!origin || origin.includes("vercel.app") || origin.includes("localhost")) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "OPTIONS"],
+  credentials: true
 }));
 
 
