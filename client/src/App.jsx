@@ -12,7 +12,7 @@ function App() {
     TXT: [],
   });
 
-  const baseUrl = import.meta.env.VITE_API_PROD_ENDPOINT;
+  const baseUrl = import.meta.env.VITE_API_ENDPOINT;
   console.log("basurl is", baseUrl);
 
   //make this a hook in future
