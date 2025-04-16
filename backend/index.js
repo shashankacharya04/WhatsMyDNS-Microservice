@@ -16,6 +16,14 @@ app.use(cors({
 }));
 
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", req.headers.origin || "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.header("Access-Control-Allow-Credentials", "true");
+  next();
+});
+
 // app.use(cors({
 //   origin: (origin, callback) => {
 //     if (!origin || origin.includes("vercel.app") || origin.includes("localhost")) {
@@ -30,6 +38,28 @@ app.use(cors({
 
 
 // app.options("*", cors());
+
+// app.use(cors({
+//   origin: function (origin, callback) {
+//     const allowedOrigins = [
+//       "http://localhost:5173",
+//       "https://whats-my-dns-client.vercel.app"
+//     ];
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+//   methods: ["GET", "POST", "OPTIONS"],
+//   credentials: true
+// }));
+
+
+// app.options("*", cors());
+
+
+
 app.use(express.json());
 
 
