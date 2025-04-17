@@ -31,27 +31,27 @@ function App() {
     setWhois(data);
     console.log("whois", whois);
   }
-  async function getDnsDetails() {
+  async function getDnsDetails(filteredValue) {
     const dnsAPI = [
       fetch(`${baseUrl}/dnsrecords/A`, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ submittedValue }),
+        body: JSON.stringify({ submittedValue: filteredValue }),
       }),
       fetch(`${baseUrl}/dnsrecords/MX`, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ submittedValue }),
+        body: JSON.stringify({ submittedValue: filteredValue }),
       }),
       fetch(`${baseUrl}/dnsrecords/TXT`, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ submittedValue }),
+        body: JSON.stringify({ submittedValue: filteredValue }),
       }),
       fetch(`${baseUrl}/dnsrecords/NS`, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ submittedValue }),
+        body: JSON.stringify({ submittedValue: filteredValue }),
       }),
     ];
 
@@ -95,7 +95,7 @@ function App() {
     const filteredValue = domainValidator(submittedValue);
     console.log("filtered value is ", filteredValue);
     getWhoisData(filteredValue);
-    getDnsDetails();
+    getDnsDetails(filteredValue);
   }, [submittedValue]); // optimize
 
   return (
