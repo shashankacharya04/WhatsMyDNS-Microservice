@@ -2,9 +2,9 @@ import React from "react";
 
 function Preview(props) {
   const { whois, dns, value } = props;
-  console.log("whois data in comp is", whois.caching);
-  console.log("DNS data in comp is", dns);
-  console.log("value data in comp is", value);
+  console.log("Preview componentwhois data in comp is", whois.caching);
+  console.log("Preview component DNS data in comp is", dns);
+  console.log("Preview component value data in comp is", value);
 
   return (
     <div className="flex gap-2">

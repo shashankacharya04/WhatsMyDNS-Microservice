@@ -1,0 +1,19 @@
+{
+  "name": "whoisservice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "node-cache": "^5.1.2",
+    "node-fetch": "^2.7.0",
+    "nodemon": "^3.1.11",
+    "whois": "^2.15.0"
+  }
+}
