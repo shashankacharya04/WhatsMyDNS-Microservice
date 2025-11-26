@@ -1,5 +1,8 @@
+require("dotenv").config();
+
 const express = require("express");
 const axios = require("axios");
+
 
 const app = express();
 const cors = require("cors");
@@ -12,15 +15,20 @@ app.use(cors({
   credentials:true
 }));
 
+const WhoisURL = process.env.local_whois
+const DNSURL = process.env.local_DNS
+
+console.log("WhoisURL is", WhoisURL);
+console.log("DNS URL is", DNSURL)
 
 app.post("/lookup", async (req, res) => {
     const domain = req.body.domain;
     console.log("domain is",domain)
-    const whois = await axios.post(`http://localhost:5001/whois?domain=${domain}`);
-    const Adns = await axios.post(`http://localhost:5002/dnsrecords/a?domain=${domain}`);
-    const NSdns = await axios.post(`http://localhost:5002/dnsrecords/NS?domain=${domain}`);
-    const TXTdns = await axios.post(`http://localhost:5002/dnsrecords/TXT?domain=${domain}`);
-    const MXdns = await axios.post(`http://localhost:5002/dnsrecords/MX?domain=${domain}`);
+    const whois = await axios.post(`${WhoisURL}/whois?domain=${domain}`);
+    const Adns = await axios.post(`${DNSURL}/dnsrecords/a?domain=${domain}`);
+    const NSdns = await axios.post(`${DNSURL}/dnsrecords/NS?domain=${domain}`);
+    const TXTdns = await axios.post(`${DNSURL}/dnsrecords/TXT?domain=${domain}`);
+    const MXdns = await axios.post(`${DNSURL}/dnsrecords/MX?domain=${domain}`);
 
     res.json({
         whois: whois.data.data,
