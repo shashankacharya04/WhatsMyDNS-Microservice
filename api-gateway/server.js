@@ -15,11 +15,12 @@ app.use(cors({
   credentials:true
 }));
 
-const WhoisURL = process.env.hosted_whois
-const DNSURL = process.env.hosted_DNS
+const WhoisURL = process.env.hosted_whois?.trim();
+const DNSURL = process.env.hosted_DNS?.trim();
 
-console.log("WhoisURL is", WhoisURL);
-console.log("DNS URL is", DNSURL)
+if (!WhoisURL || !DNSURL) {
+  throw new Error("Environment variables are missing on Vercel");
+}
 
 app.post("/lookup", async (req, res) => {
     const domain = req.body.domain;
