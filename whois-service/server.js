@@ -2,9 +2,17 @@ const express = require("express");
 const whois = require("whois");
 const nodeCache = require("node-cache");
 const fetch = require("node-fetch");
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
+
+
+app.use(cors({
+  origin:["https://whats-my-dns-microservice-api-gatew.vercel.app"],
+  methods:["GET","POST", "OPTIONS"],
+  credentials:true
+}));
 
 const whoisCache = new nodeCache({stdTTL:3600});
 

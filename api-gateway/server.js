@@ -15,8 +15,8 @@ app.use(cors({
   credentials:true
 }));
 
-const WhoisURL = process.env.local_whois
-const DNSURL = process.env.local_DNS
+const WhoisURL = process.env.hosted_whois
+const DNSURL = process.env.hosted_DNS
 
 console.log("WhoisURL is", WhoisURL);
 console.log("DNS URL is", DNSURL)

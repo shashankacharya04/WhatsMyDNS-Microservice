@@ -1,10 +1,16 @@
 const express = require('express');
-
+const cors = require("cors");
 const app = express ();
 
 app.use(express.json());
 
 const dns = require("dns");
+
+app.use(cors({
+  origin:["https://whats-my-dns-microservice-api-gatew.vercel.app"],
+  methods:["GET","POST", "OPTIONS"],
+  credentials:true
+}));
 
 
 const resolvers = [
