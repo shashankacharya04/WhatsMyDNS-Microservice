@@ -15,7 +15,7 @@ app.use(cors({
   credentials:true
 }));
 
-app.options("*", cors());
+app.options("/*", cors());
 const WhoisURL = process.env.hosted_whois?.trim();
 const DNSURL = process.env.hosted_DNS?.trim();
 
@@ -44,4 +44,5 @@ app.post("/lookup", async (req, res) => {
     });
 });
 
-app.listen(5000, () => console.log("API Gateway running on 5000"));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log("API Gateway running on", PORT));
