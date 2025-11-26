@@ -15,7 +15,7 @@ app.use(cors({
   credentials:true
 }));
 
-app.options("/*", cors());
+
 const WhoisURL = process.env.hosted_whois?.trim();
 const DNSURL = process.env.hosted_DNS?.trim();
 
