@@ -18,9 +18,9 @@ app.use(cors({
 const WhoisURL = process.env.hosted_whois?.trim();
 const DNSURL = process.env.hosted_DNS?.trim();
 
-if (!WhoisURL || !DNSURL) {
-  throw new Error("Environment variables are missing on Vercel");
-}
+// if (!WhoisURL || !DNSURL) {
+//   throw new Error("Environment variables are missing on Vercel");
+// }
 
 app.post("/lookup", async (req, res) => {
     const domain = req.body.domain;
@@ -43,4 +43,4 @@ app.post("/lookup", async (req, res) => {
     });
 });
 
-app.listen(5000, () => console.log("API Gateway running on 5000"));
+//app.listen(5000, () => console.log("API Gateway running on 5000"));

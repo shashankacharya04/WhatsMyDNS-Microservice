@@ -13,7 +13,7 @@ function App() {
   });
 
   //const baseUrl = import.meta.env.VITE_API_PROD_ENDPOINT;
-  const baseUrl = import.meta.env.VITE_MICRO_DEV
+  const baseUrl = import.meta.env.VITE_MICRO_PROD
   console.log("basurl is", baseUrl);
 
   //make this a hook in future
@@ -53,7 +53,7 @@ async function Lookup(filteredValue) {
   });
     console.log("whois", whois);
     setDNS(data.dns)
-    console.log("DNS", DNS);
+    console.log("DNS", dns);
   }
 
   // async function getDnsDetails(filteredValue) {
