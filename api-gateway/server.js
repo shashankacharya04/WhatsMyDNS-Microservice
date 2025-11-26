@@ -10,11 +10,12 @@ const cors = require("cors");
 app.use(express.json());
 
 app.use(cors({
-  origin:["http://localhost:5173","https://whats-my-dns-client.vercel.app","https://whats-my-dns-microservice-9eew.vercel.app/"],
+  origin:["http://localhost:5173","https://whats-my-dns-client.vercel.app","https://whats-my-dns-microservice-9eew.vercel.app"],
   methods:["GET","POST", "OPTIONS"],
   credentials:true
 }));
 
+app.options("*", cors());
 const WhoisURL = process.env.hosted_whois?.trim();
 const DNSURL = process.env.hosted_DNS?.trim();
 
