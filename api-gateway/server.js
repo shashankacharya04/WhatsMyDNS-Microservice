@@ -43,4 +43,4 @@ app.post("/lookup", async (req, res) => {
     });
 });
 
-//app.listen(5000, () => console.log("API Gateway running on 5000"));
+app.listen(5000, () => console.log("API Gateway running on 5000"));
