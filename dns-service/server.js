@@ -1,192 +1,66 @@
-const express = require('express');
+const express = require("express");
 const cors = require("cors");
-const app = express ();
-
-app.use(express.json());
-
 const dns = require("dns");
 
+const app = express();
+app.use(express.json());
+
 app.use(cors({
-  origin:["https://whats-my-dns-microservice-api-gatew.vercel.app"],
-  methods:["GET","POST", "OPTIONS"],
-  credentials:true
+  origin: [
+    "http://localhost:5173",
+    "https://whats-my-dns-client.vercel.app",
+    "https://whats-my-dns-microservice-api-gatew.vercel.app"
+  ],
+  methods: ["GET","POST","OPTIONS"],
+  credentials: true
 }));
 
-
-const resolvers = [
-  { r_name: 'Google DNS', ip: '8.8.8.8' },
-  { r_name: 'Cloudflare DNS', ip: '1.1.1.1' },
-  { r_name: 'OpenDNS', ip: '208.67.222.222' }
-];
-
-
-app.post("/dnsrecords/A",async function aRecords(req,res){
-    const domain = req.query.domain;
-//const domain = "17-netsoltest.com"
-try {
-    const results = await Promise.all(
-      resolvers.map(({ r_name, ip }) => {
-        return new Promise((resolve, reject) => {
-          dns.setServers([ip]);
-          dns.lookup(domain, (err, address) => {
-            if (err) {
-              //console.error(`Error from ${r_name}: ${err.message}`);
-              resolve({ resolver: r_name, error: err.message });
-            } else {
-              //console.log(`Checking from: ${r_name}, IP: ${address}`);
-              resolve({ resolver: r_name, ip: address });
-            }
-          });
-        });
-      })
-    );
-
-    res.status(200).json(results); 
-  //   [
-  //     {
-  //         "resolver": "Google DNS",
-  //         "ip": "142.251.42.14"
-  //     },
-  //     {
-  //         "resolver": "Cloudflare DNS",
-  //         "ip": "142.251.42.14"
-  //     },
-  //     {
-  //         "resolver": "OpenDNS",
-  //         "ip": "142.251.42.14"
-  //     }
-  // ]
-  } catch (err) {
-    res.status(500).json({ error: "Something went wrong", details: err.message });
-  }
-});
-
-app.post("/dnsrecords/MX",async function mxRecords(req,res){
+app.post("/dnsrecords/A", async (req, res) => {
   const domain = req.query.domain;
-  //const domain = "17-netsoltest.com"
-  try {
-      const results = await Promise.all(
-        resolvers.map(({ r_name, ip }) => {
-          return new Promise((resolve, reject) => {
-            dns.setServers([ip]);
-            dns.resolveMx(domain, (err, address) => {
-              if (err) {
-                //console.error(`Error from ${r_name}: ${err.message}`);
-                resolve({ resolver: r_name, error: err.message });
-              } else {
-                //console.log(`Checking from: ${r_name}, mx: ${address}`);
-                resolve({ resolver: r_name, MX: address });
-              }
-            });
-          });
-        })
-      );
-  
-      res.status(200).json(results); 
-    //   [
-    //     {
-    //         "resolver": "Google DNS",
-    //         "ip": "142.251.42.14"
-    //     },
-    //     {
-    //         "resolver": "Cloudflare DNS",
-    //         "ip": "142.251.42.14"
-    //     },
-    //     {
-    //         "resolver": "OpenDNS",
-    //         "ip": "142.251.42.14"
-    //     }
-    // ]
-    } catch (err) {
-      res.status(500).json({ error: "Something went wrong", details: err.message });
+
+  dns.lookup(domain, { all: true }, (err, addresses) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
     }
-    
+
+    const results = addresses.map(a => ({
+      resolver: "Render DNS",
+      ip: a.address
+    }));
+
+    res.json(results);
+  });
 });
 
-
-app.post("/dnsrecords/TXT",async function txtRecords(req,res){
+app.post("/dnsrecords/MX", (req, res) => {
   const domain = req.query.domain;
-  //const domain = "17-netsoltest.com"
-  try {
-      const results = await Promise.all(
-        resolvers.map(({ r_name, ip }) => {
-          return new Promise((resolve, reject) => {
-            dns.setServers([ip]);
-            dns.resolveTxt(domain, (err, address) => {
-              if (err) {
-                //console.error(`Error from ${r_name}: ${err.message}`);
-                resolve({ resolver: r_name, error: err.message });
-              } else {
-                //console.log(`Checking from: ${r_name}, mx: ${address}`);
-                resolve({ resolver: r_name, TXT: address });
-              }
-            });
-          });
-        })
-      );
-  
-      res.status(200).json(results); 
-    //   [
-    //     {
-    //         "resolver": "Google DNS",
-    //         "ip": "142.251.42.14"
-    //     },
-    //     {
-    //         "resolver": "Cloudflare DNS",
-    //         "ip": "142.251.42.14"
-    //     },
-    //     {
-    //         "resolver": "OpenDNS",
-    //         "ip": "142.251.42.14"
-    //     }
-    // ]
-    } catch (err) {
-      res.status(500).json({ error: "Something went wrong", details: err.message });
-    }
+
+  dns.resolveMx(domain, (err, records) => {
+    if (err) return res.status(500).json({ error: err.message });
+
+    res.json([{ resolver: "Render DNS", MX: records }]);
+  });
 });
 
-
-app.post("/dnsrecords/NS",async function nameServers(req,res){
+app.post("/dnsrecords/TXT", (req, res) => {
   const domain = req.query.domain;
-  console.log("domain in DNS controller is", domain)
-//const domain = "17-netsoltest.com"
-try {
-    const results = await Promise.all(
-      resolvers.map(({ r_name, ip }) => {
-        return new Promise((resolve, reject) => {
-          dns.setServers([ip]);
-          dns.resolveNs(domain, (err, address) => {
-            if (err) {
-              //console.error(`Error from ${r_name}: ${err.message}`);
-              resolve({ resolver: r_name, error: err.message });
-            } else {
-              //console.log(`Checking from: ${r_name}, IP: ${address}`);
-              resolve({ resolver: r_name, NS: address });
-            }
-          });
-        });
-      })
-    );
 
-    res.status(200).json(results); 
-  //   [
-  //     {
-  //         "resolver": "Google DNS",
-  //         "ip": "142.251.42.14"
-  //     },
-  //     {
-  //         "resolver": "Cloudflare DNS",
-  //         "ip": "142.251.42.14"
-  //     },
-  //     {
-  //         "resolver": "OpenDNS",
-  //         "ip": "142.251.42.14"
-  //     }
-  // ]
-  } catch (err) {
-    res.status(500).json({ error: "Something went wrong", details: err.message });
-  }
+  dns.resolveTxt(domain, (err, records) => {
+    if (err) return res.status(500).json({ error: err.message });
+
+    res.json([{ resolver: "Render DNS", TXT: records }]);
+  });
 });
 
+app.post("/dnsrecords/NS", (req, res) => {
+  const domain = req.query.domain;
 
-app.listen(5002, () => console.log("DNS microservice running on 5002"));
+  dns.resolveNs(domain, (err, records) => {
+    if (err) return res.status(500).json({ error: err.message });
+
+    res.json([{ resolver: "Render DNS", NS: records }]);
+  });
+});
+
+const PORT = process.env.PORT || 5002;
+app.listen(PORT, () => console.log("DNS microservice running on", PORT));
