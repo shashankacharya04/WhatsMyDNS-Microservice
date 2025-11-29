@@ -5,6 +5,12 @@ const dns = require("dns");
 const app = express();
 app.use(express.json());
 
+
+setInterval(() => {
+  console.log("Keeping service alive...");
+}, 1000 * 60 * 10);
+
+
 app.use(cors({
   origin: [
     "http://localhost:5173",

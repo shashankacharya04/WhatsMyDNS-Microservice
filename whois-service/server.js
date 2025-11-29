@@ -7,6 +7,10 @@ const cors = require("cors");
 const app = express();
 app.use(express.json());
 
+setInterval(() => {
+  console.log("Keeping service alive...");
+}, 1000 * 60 * 10);
+
 
 app.use(cors({
   origin:["https://whats-my-dns-microservice-api-gatew.vercel.app"],
